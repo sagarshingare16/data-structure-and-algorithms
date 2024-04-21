@@ -27,7 +27,7 @@ public class Graph {
         graph[0].add(new Edge(1,3));
 
         graph[0].add(new Edge(2,0));
-        graph[0].add(new Edge(2,1));
+        graph[0].add(new Edge(2,4));
 
         graph[0].add(new Edge(3,1));
         graph[0].add(new Edge(3,4));
@@ -63,6 +63,33 @@ public class Graph {
         }
     }
 
+    public static void dfs(ArrayList<Edge> graph[],int current, boolean[] visited){
+        System.out.print(current + " ");
+        visited[current] = true;
+
+        for (int i = 0;i<graph[current].size();i++){
+            Edge edge = graph[current].get(i);
+            if(visited[edge.des] == false) {
+                dfs(graph, edge.des, visited);
+            }
+        }
+    }
+
+    //O(V^V)
+    public static void printAllPath(ArrayList<Edge> graph[], boolean[] visited,int current ,String path, int target){
+        if(current == target){
+            System.out.println(path);
+            return;
+        }
+        for (int i=0;i<graph[current].size();i++){
+            Edge edge = graph[current].get(i);
+            if(!visited[edge.des]){
+                visited[current] = true;
+                printAllPath(graph,visited,edge.des,path+edge.des,target);
+                visited[current] = false;
+            }
+        }
+    }
 
     public static void main(String[] args) {
         int V = 7;
@@ -70,11 +97,24 @@ public class Graph {
         createGraph(graph);
 
         boolean[] visited = new boolean[V];
-        for (int i=0;i<V;i++){
+
+        /*for (int i=0;i<V;i++){
             if(visited[i] == false){
                 bfs(graph,V,visited,i);
             }
-        }
-        System.out.println();
+        }*/
+
+        /*for (int i=0;i<V;i++){
+            if(visited[i] == false){
+                dfs(graph,i,visited);
+            }
+        }*/
+
+        //System.out.println();
+
+        int src = 0, tar = 5;
+        printAllPath(graph,visited,src,"0",tar);
+
+
     }
 }
