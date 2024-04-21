@@ -1,44 +1,80 @@
 package com.example.dsa2.graph;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Graph {
-    private int vertices;
-    private int edges;
-    int[][] adjMatrix;
+    static class Edge{
+        int src;
+        int des;
 
-    public Graph(int nodes){
-        this.vertices = nodes;
-        this.edges = 0;
-        this.adjMatrix = new int[nodes][nodes];
-    }
-
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(vertices).append(":Vertices ").append(edges).append(":Edges").append("\n");
-        for (int v=0;v<vertices;v++){
-            sb.append(v).append(":");
-            for (int w : adjMatrix[v]){
-                sb.append(w).append(" ");
-            }
-            sb.append("\n");
+        public Edge(int src,int des){
+            this.src = src;
+            this.des = des;
         }
-        return sb.toString();
     }
 
-    public void addEdge(int vertices, int edges){
-        this.adjMatrix[vertices][edges] = 1;
-        this.adjMatrix[edges][vertices] = 1;   // for undirected graph.
-        edges++;
+    public static void createGraph(ArrayList<Edge> graph[]){
+        for (int i=0;i< graph.length;i++){
+            graph[i] = new ArrayList<Edge>();
+        }
+
+        graph[0].add(new Edge(0,1));
+        graph[0].add(new Edge(0,2));
+
+        graph[0].add(new Edge(1,0));
+        graph[0].add(new Edge(1,3));
+
+        graph[0].add(new Edge(2,0));
+        graph[0].add(new Edge(2,1));
+
+        graph[0].add(new Edge(3,1));
+        graph[0].add(new Edge(3,4));
+        graph[0].add(new Edge(3,5));
+
+        graph[0].add(new Edge(4,2));
+        graph[0].add(new Edge(4,3));
+        graph[0].add(new Edge(4,5));
+
+        graph[0].add(new Edge(5,3));
+        graph[0].add(new Edge(5,4));
+        graph[0].add(new Edge(5,6));
+
+        graph[0].add(new Edge(6,5));
+
+    }
+
+    public static void bfs(ArrayList<Edge> graph[],int V,boolean[] visited,int start ) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+
+        while (!queue.isEmpty()){
+            int current = queue.remove();
+            if ((visited[current] == false)){
+                System.out.print(current + " ");
+                visited[current] = true;
+
+                for (int i=0;i<graph[current].size();i++){
+                    Edge e = graph[current].get(i);
+                    queue.add(e.des);
+                }
+            }
+        }
     }
 
 
     public static void main(String[] args) {
-        Graph graph = new Graph(4);
-        graph.addEdge(0,1);
-        graph.addEdge(2,2);
-        graph.addEdge(2,3);
-        graph.addEdge(3,0);
+        int V = 7;
+        ArrayList<Edge> graph[] = new ArrayList[V];
+        createGraph(graph);
 
-        System.out.println(graph);
-
+        boolean[] visited = new boolean[V];
+        for (int i=0;i<V;i++){
+            if(visited[i] == false){
+                bfs(graph,V,visited,i);
+            }
+        }
+        System.out.println();
     }
 }
