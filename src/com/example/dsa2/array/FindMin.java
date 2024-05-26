@@ -19,11 +19,11 @@ public class FindMin {
         int result = findMin(arr);
         System.out.println(result);
 
-        IntStream result1 = Arrays.stream(arr)
+        IntStream finalResult = Arrays.stream(arr)
                 .filter(value -> {
                     int min = 0;
                     return value < min;
                 });
-        System.out.println(Arrays.toString(result1.toArray()));
+        System.out.println(Arrays.toString(finalResult.toArray()));
     }
 }
